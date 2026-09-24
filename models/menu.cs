@@ -2,11 +2,15 @@ using System;
 using LigaDaTurma.Models;
 using LigaDaTurma.Services;
 
-public class Menu
+namespace LigaDaTurma
 {
-    public static void Exibir()
+    public class Menu
     {
-        int opcao;
+        private static readonly CampeonatoService _service = new();
+
+        public static void Exibir()
+        {
+            int opcao;
 
             do
             {
@@ -22,19 +26,22 @@ public class Menu
                 Console.WriteLine("0 - Sair");
                 Console.Write("Escolha uma opção: ");
 
-            opcao = int.Parse(Console.ReadLine()!);
+                if (!int.TryParse(Console.ReadLine(), out opcao))
+                {
+                    opcao = -1;
+                }
 
                 Console.Clear();
 
-            switch (opcao)
-            {
-                case 1:
-                    // Cadastrar equipe
-                    break;
+                switch (opcao)
+                {
+                    case 1:
+                        CadastrarEquipe();
+                        break;
 
-                case 2:
-                    // Consultar equipes
-                    break;
+                    case 2:
+                        ConsultarEquipes();
+                        break;
 
                     case 3:
                         RegistrarPartida();
@@ -70,10 +77,6 @@ public class Menu
 
             } while (opcao != 0);
         }
-
-        // ==========================================
-        // MÉTODOS AUXILIARES DE CADA OPÇÃO
-        // ==========================================
 
         private static void CadastrarEquipe()
         {
@@ -199,7 +202,17 @@ public class Menu
 
             foreach (var p in partidas)
             {
-                Console.WriteLine($"[ID: {p.Id}] {p.Modalidade} | {p.EquipeMandante.Nome} vs {p.EquipeVisitante.Nome} | Resultado: {p.ObterResultado()}");
+                string placar = p switch
+                {
+                    PartidaFutsal futsal => $"{futsal.EquipeMandante.Nome} {futsal.GolsMandante} x {futsal.GolsVisitante} {futsal.EquipeVisitante.Nome}",
+                    PartidaESports esports => $"{esports.EquipeMandante.Nome} {esports.MapasMandante} x {esports.MapasVisitante} {esports.EquipeVisitante.Nome}",
+                    _ => $"{p.EquipeMandante.Nome} vs {p.EquipeVisitante.Nome}"
+                };
+
+                Console.WriteLine($"[ID: {p.Id}] {p.Modalidade}");
+                Console.WriteLine($"  Placar: {placar}");
+                Console.WriteLine($"  Resultado: {p.ObterResultado()}");
+                Console.WriteLine("  ----------------------------------------");
             }
         }
 
