@@ -2,15 +2,11 @@ using System;
 using LigaDaTurma.Models;
 using LigaDaTurma.Services;
 
-namespace LigaDaTurma
+public class Menu
 {
-    public class Menu
+    public static void Exibir()
     {
-        private static readonly CampeonatoService _service = new CampeonatoService();
-
-        public static void Exibir()
-        {
-            int opcao;
+        int opcao;
 
             do
             {
@@ -26,23 +22,19 @@ namespace LigaDaTurma
                 Console.WriteLine("0 - Sair");
                 Console.Write("Escolha uma opção: ");
 
-                // int.TryParse evita que o programa feche se o usuário digitar letras
-                if (!int.TryParse(Console.ReadLine(), out opcao))
-                {
-                    opcao = -1; // Valor genérico para cair no default
-                }
+            opcao = int.Parse(Console.ReadLine()!);
 
                 Console.Clear();
 
-                switch (opcao)
-                {
-                    case 1:
-                        CadastrarEquipe();
-                        break;
+            switch (opcao)
+            {
+                case 1:
+                    // Cadastrar equipe
+                    break;
 
-                    case 2:
-                        ConsultarEquipes();
-                        break;
+                case 2:
+                    // Consultar equipes
+                    break;
 
                     case 3:
                         RegistrarPartida();
