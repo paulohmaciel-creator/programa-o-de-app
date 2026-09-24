@@ -1,9 +1,10 @@
-﻿using System;
-
-class Program
+﻿namespace LigaDaTurma
 {
-    static void Main(string[] args)
+    internal class Program
     {
-        Menu.Exibir();
+        private static void Main(string[] args)
+        {
+            Menu.Exibir();
+        }
     }
 }

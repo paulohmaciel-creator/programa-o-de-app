@@ -1,23 +1,38 @@
 using System;
 using System.Collections.Generic;
+using LigaDaTurma.Models;
 
-public class LigaService
+namespace LigaDaTurma.Services
 {
-    private readonly List<Equipe> _equipes = new();
-
-    public void CadastrarEquipe(string nome, string modalidade)
+    public class CampeonatoService
     {
-        if (string.IsNullOrWhiteSpace(nome))
-            throw new ArgumentException("Nome da equipe inválido.");
+        public List<Equipe> Equipes { get; } = new();
+        public Historico HistoricoPartidas { get; } = new();
+        public Festival? FestivalAtual { get; private set; }
 
-        if (string.IsNullOrWhiteSpace(modalidade))
-            throw new ArgumentException("Modalidade inválida.");
+        public void CadastrarEquipe(string nome)
+        {
+            if (string.IsNullOrWhiteSpace(nome))
+                throw new ArgumentException("O nome da equipe não pode ser vazio.");
 
-        _equipes.Add(new Equipe(nome.Trim(), modalidade.Trim()));
-    }
+            Equipes.Add(new Equipe(nome));
+        }
 
-    public List<Equipe> ListarEquipes()
-    {
-        return _equipes;
+        public void RegistrarPartidaFutsal(Equipe equipeMandante, Equipe equipeVisitante, int golsMandante, int golsVisitante)
+        {
+            var partida = new PartidaFutsal(equipeMandante, equipeVisitante, golsMandante, golsVisitante);
+            HistoricoPartidas.AdicionarPartida(partida);
+        }
+
+        public void RegistrarPartidaeSports(Equipe equipeMandante, Equipe equipeVisitante, int mapasMandante, int mapasVisitante)
+        {
+            var partida = new PartidaESports(equipeMandante, equipeVisitante, mapasMandante, mapasVisitante);
+            HistoricoPartidas.AdicionarPartida(partida);
+        }
+
+        public void CadastrarFestival(string nomeFestival, string local, string data, string horario)
+        {
+            FestivalAtual = new Festival(nomeFestival, local, data, horario);
+        }
     }
 }

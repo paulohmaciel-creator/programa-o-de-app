@@ -1,13 +1,19 @@
 using System;
 
-public class Equipe
+namespace LigaDaTurma.Models
 {
-    public string Nome { get; set; }
-    public string Modalidade { get; set; }
-
-    public Equipe(string nome, string modalidade)
+    public class Equipe
     {
-        Nome = nome;
-        Modalidade = modalidade;
+        public string Nome { get; private set; }
+
+        public Equipe(string nome)
+        {
+            if (string.IsNullOrWhiteSpace(nome))
+                throw new ArgumentException("O nome da equipe não pode ser vazio.");
+
+            Nome = nome.Trim();
+        }
+
+        public override string ToString() => Nome;
     }
 }
