@@ -1,19 +1,6 @@
 using System;
 
-class partidaESport
+public class PartidaESports
 {
-    static void Main(string[] args)
-    {
-        
-
-
-
-
-
-
-
-
-
-        
-    }
+    // Classe de modelo para partidas de eSports.
 }

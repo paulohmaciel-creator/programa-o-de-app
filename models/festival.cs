@@ -1,19 +1,6 @@
 using System;
 
-class festival
+public class Festival
 {
-    static void Main(string[] args)
-    {
-        
-
-
-
-
-
-
-
-
-
-        
-    }
+    // Classe de modelo para festival.
 }

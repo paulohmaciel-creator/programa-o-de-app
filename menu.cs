@@ -1,19 +1,6 @@
 using System;
 
-class menu
+public class Menu
 {
-    static void Main(string[] args)
-    {
-        
-
-
-
-
-
-
-
-
-
-        
-    }
+ 
 }

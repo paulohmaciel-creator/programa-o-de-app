@@ -1,19 +1,6 @@
 using System;
 
-class PartidaFutsal
+public class PartidaFutsal
 {
-    static void Main(string[] args)
-    {
-        
-
-
-
-
-
-
-
-
-
-        
-    }
+    // Classe de modelo para partidas de futsal.
 }

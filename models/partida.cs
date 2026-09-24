@@ -1,19 +1,6 @@
 using System;
 
-class partidass
+public class Partida
 {
-    static void Main(string[] args)
-    {
-        
-
-
-
-
-
-
-
-
-
-        
-    }
+    // Classe de modelo para partidas.
 }
