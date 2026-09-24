@@ -1,20 +1,13 @@
 using System;
 
-List<Equipe> equipes = new();
-
-Console.WriteLine("Digite o nome da equipe:");
-string? nome = Console.ReadLine();
-
-if (!string.IsNullOrWhiteSpace(nome))
-{
-    equipes.Add(new Equipe(nome));
-    Console.WriteLine($"Equipe cadastrada: {nome}");
-}public class Equipe
+public class Equipe
 {
     public string Nome { get; set; }
+    public string Modalidade { get; set; }
 
-    public Equipe(string nome)
+    public Equipe(string nome, string modalidade)
     {
         Nome = nome;
+        Modalidade = modalidade;
     }
 }
