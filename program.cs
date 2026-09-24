@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 
 class Program
 {
     static void Main(string[] args)
     {
-        List<Equipe> equipes = new();
+        var ligaService = new LigaService();
 
         while (true)
         {
@@ -38,13 +37,19 @@ class Program
                 continue;
             }
 
-            nome = nome.Trim();
-            equipes.Add(new Equipe(nome, modalidade));
-            Console.WriteLine($"Equipe cadastrada: {nome} - {modalidade}");
+            try
+            {
+                ligaService.CadastrarEquipe(nome, modalidade);
+                Console.WriteLine($"Equipe cadastrada: {nome.Trim()} - {modalidade}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         Console.WriteLine("\nEquipes cadastradas:");
-        foreach (var equipe in equipes)
+        foreach (var equipe in ligaService.ListarEquipes())
         {
             Console.WriteLine($"- {equipe.Nome} ({equipe.Modalidade})");
         }
