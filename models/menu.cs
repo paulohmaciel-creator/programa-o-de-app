@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using LigaDaTurma.Models;
 using LigaDaTurma.Services;
 
@@ -223,8 +224,8 @@ namespace LigaDaTurma
             string nome = Console.ReadLine()!;
             Console.Write("Local: ");
             string local = Console.ReadLine()!;
-            Console.Write("Data (ex: 25/10/2026): ");
-            string data = Console.ReadLine()!;
+            Console.Write("Data (dd/mm/aaaa): ");
+            string data = LerDataFestival();
             Console.Write("Horário (ex: 14h): ");
             string horario = Console.ReadLine()!;
 
@@ -237,6 +238,82 @@ namespace LigaDaTurma
             {
                 Console.WriteLine($"Erro: {ex.Message}");
             }
+        }
+
+        private static string LerDataFestival()
+        {
+            string entrada = string.Empty;
+
+            while (true)
+            {
+                var tecla = Console.ReadKey(true);
+
+                if (tecla.Key == ConsoleKey.Enter)
+                {
+                    Console.WriteLine();
+                    break;
+                }
+
+                if (tecla.Key == ConsoleKey.Backspace)
+                {
+                    if (entrada.Length > 0)
+                    {
+                        entrada = entrada.Substring(0, entrada.Length - 1);
+                        if (entrada.Length == 2 || entrada.Length == 5)
+                        {
+                            entrada = entrada.Substring(0, entrada.Length - 1);
+                        }
+
+                        Console.Write("\rData (dd/mm/aaaa): " + entrada.PadRight(10));
+                    }
+
+                    continue;
+                }
+
+                if (char.IsDigit(tecla.KeyChar) && entrada.Length < 10)
+                {
+                    if ((entrada.Length == 2 || entrada.Length == 5) && entrada[entrada.Length - 1] != '/')
+                    {
+                        entrada += "/";
+                    }
+
+                    entrada += tecla.KeyChar;
+                    Console.Write("\rData (dd/mm/aaaa): " + entrada.PadRight(10));
+                }
+            }
+
+            return NormalizarDataFestival(entrada);
+        }
+
+        private static string NormalizarDataFestival(string entrada)
+        {
+            if (string.IsNullOrWhiteSpace(entrada))
+                throw new ArgumentException("A data do festival não pode ficar vazia.");
+
+            string valor = entrada.Trim();
+            valor = valor.Replace("-", "/");
+
+            if (valor.All(char.IsDigit))
+            {
+                if (valor.Length == 8)
+                {
+                    valor = $"{valor.Substring(0, 2)}/{valor.Substring(2, 2)}/{valor.Substring(4, 4)}";
+                }
+                else
+                {
+                    throw new ArgumentException("Data inválida. Use o formato dd/MM/yyyy.");
+                }
+            }
+
+            if (valor.Length == 10 && valor[2] == '/' && valor[5] == '/')
+            {
+                if (DateTime.TryParseExact(valor, "dd/MM/yyyy", CultureInfo.GetCultureInfo("pt-BR"), DateTimeStyles.None, out _))
+                {
+                    return valor;
+                }
+            }
+
+            throw new ArgumentException("Data inválida. Use o formato dd/MM/yyyy.");
         }
 
         private static void GerarConvite()
