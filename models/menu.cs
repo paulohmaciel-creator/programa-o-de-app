@@ -222,12 +222,12 @@ namespace LigaDaTurma
             Console.WriteLine("--- CADASTRAR FESTIVAL ---");
             Console.Write("Nome do Festival: ");
             string nome = Console.ReadLine()!;
-            Console.Write("Local: ");
-            string local = Console.ReadLine()!;
             Console.Write("Data (dd/mm/aaaa): ");
             string data = LerDataFestival();
+            Console.Write("Local: ");
+            string local = Console.ReadLine()!;
             Console.Write("Horário (ex: 14h): ");
-            string horario = Console.ReadLine()!;
+            string horario = LerHorarioFestival();
 
             try
             {
@@ -285,6 +285,51 @@ namespace LigaDaTurma
             return NormalizarDataFestival(entrada);
         }
 
+        private static string LerHorarioFestival()
+        {
+            string entrada = string.Empty;
+
+            while (true)
+            {
+                var tecla = Console.ReadKey(true);
+
+                if (tecla.Key == ConsoleKey.Enter)
+                {
+                    Console.WriteLine();
+                    break;
+                }
+
+                if (tecla.Key == ConsoleKey.Backspace)
+                {
+                    if (entrada.Length > 0)
+                    {
+                        entrada = entrada.Substring(0, entrada.Length - 1);
+                        if (entrada.Length == 2 && entrada.Contains(":"))
+                        {
+                            entrada = entrada.Substring(0, 2);
+                        }
+
+                        Console.Write("\rHorário (ex: 14h): " + entrada.PadRight(5) + " ");
+                    }
+
+                    continue;
+                }
+
+                if (char.IsDigit(tecla.KeyChar) && entrada.Length < 4)
+                {
+                    entrada += tecla.KeyChar;
+                    // insert colon after 2 digits for display
+                    var display = entrada;
+                    if (display.Length > 2)
+                        display = display.Insert(2, ":");
+
+                    Console.Write("\rHorário (ex: 14h): " + display.PadRight(5) + "h");
+                }
+            }
+
+            return NormalizarHorarioFestival(entrada);
+        }
+
         private static string NormalizarDataFestival(string entrada)
         {
             if (string.IsNullOrWhiteSpace(entrada))
@@ -314,6 +359,46 @@ namespace LigaDaTurma
             }
 
             throw new ArgumentException("Data inválida. Use o formato dd/MM/yyyy.");
+        }
+
+        private static string NormalizarHorarioFestival(string entrada)
+        {
+            if (string.IsNullOrWhiteSpace(entrada))
+                throw new ArgumentException("O horário do festival não pode ficar vazio.");
+
+            string valor = entrada.Trim();
+
+            if (valor.All(char.IsDigit))
+            {
+                if (valor.Length == 1 || valor.Length == 2)
+                {
+                    // only hour provided -> minutes = 00
+                    valor = valor.PadLeft(2, '0') + "00";
+                }
+                else if (valor.Length == 3)
+                {
+                    // e.g. 930 -> 09:30
+                    valor = "0" + valor;
+                }
+                else if (valor.Length == 4)
+                {
+                    // ok
+                }
+                else
+                {
+                    throw new ArgumentException("Horário inválido. Use o formato HHmm (ex: 1400) ou HH (ex: 14).");
+                }
+            }
+
+            if (valor.Length == 4 && int.TryParse(valor.Substring(0, 2), out int hh) && int.TryParse(valor.Substring(2, 2), out int mm))
+            {
+                if (hh < 0 || hh > 23 || mm < 0 || mm > 59)
+                    throw new ArgumentException("Horário inválido. Hora deve ser entre 00 e 23 e minutos entre 00 e 59.");
+
+                return $"{hh:D2}:{mm:D2}h";
+            }
+
+            throw new ArgumentException("Horário inválido. Use o formato HHmm (ex: 1400) ou HH (ex: 14).");
         }
 
         private static void GerarConvite()
