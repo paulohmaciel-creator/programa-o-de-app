@@ -218,7 +218,7 @@ namespace LigaDaTurma
 
         private static string LerDataComMascara()
         {
-            Console.Write("Data (dd/mm/aaaa): ");
+            Console.Write("Data (mm/dd/aaaa): ");
             string texto = string.Empty;
 
             while (true)
@@ -254,13 +254,10 @@ namespace LigaDaTurma
                 if (texto.Length >= 10)
                     continue;
 
-                if (texto.Length == 1 || texto.Length == 4)
+                if (texto.Length == 2 || texto.Length == 5)
                 {
-                    texto += tecla.KeyChar;
-                    Console.Write(tecla.KeyChar);
                     texto += "/";
                     Console.Write("/");
-                    continue;
                 }
 
                 texto += tecla.KeyChar;
@@ -308,13 +305,10 @@ namespace LigaDaTurma
                 if (texto.Length >= 5)
                     continue;
 
-                if (texto.Length == 1)
+                if (texto.Length == 2)
                 {
-                    texto += tecla.KeyChar;
-                    Console.Write(tecla.KeyChar);
                     texto += ":";
                     Console.Write(":");
-                    continue;
                 }
 
                 texto += tecla.KeyChar;

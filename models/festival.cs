@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using LigaDaTurma.Interfaces;
 
 namespace LigaDaTurma.Models
@@ -20,8 +21,22 @@ namespace LigaDaTurma.Models
 
             NomeFestival = nomeFestival.Trim();
             Local = local.Trim();
-            Data = data.Trim();
-            Horario = horario.Trim();
+
+            string dataFormatada = data.Trim();
+            if (!DateTime.TryParseExact(dataFormatada, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dataValidada))
+            {
+                throw new ArgumentException("A data deve estar no formato mm/dd/aaaa.");
+            }
+
+            string horarioFormatado = horario.Trim();
+            if (!TimeOnly.TryParseExact(horarioFormatado, "HH:mm", out var horarioValidado) ||
+                horarioValidado > new TimeOnly(23, 59))
+            {
+                throw new ArgumentException("O horário deve estar no formato HH:mm e não pode passar de 23:59.");
+            }
+
+            Data = dataValidada.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+            Horario = horarioFormatado;
         }
 
         public string GerarCartao()
