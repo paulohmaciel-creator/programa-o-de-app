@@ -216,6 +216,114 @@ namespace LigaDaTurma
             }
         }
 
+        private static string LerDataComMascara()
+        {
+            Console.Write("Data (dd/mm/aaaa): ");
+            string texto = string.Empty;
+
+            while (true)
+            {
+                ConsoleKeyInfo tecla = Console.ReadKey(true);
+
+                if (tecla.Key == ConsoleKey.Enter)
+                {
+                    Console.WriteLine();
+                    break;
+                }
+
+                if (tecla.Key == ConsoleKey.Backspace)
+                {
+                    if (texto.Length > 0)
+                    {
+                        if (texto.EndsWith("/"))
+                        {
+                            texto = texto.Substring(0, texto.Length - 1);
+                            Console.Write("\b \b");
+                        }
+
+                        texto = texto.Substring(0, texto.Length - 1);
+                        Console.Write("\b \b");
+                    }
+
+                    continue;
+                }
+
+                if (!char.IsDigit(tecla.KeyChar))
+                    continue;
+
+                if (texto.Length >= 10)
+                    continue;
+
+                if (texto.Length == 1 || texto.Length == 4)
+                {
+                    texto += tecla.KeyChar;
+                    Console.Write(tecla.KeyChar);
+                    texto += "/";
+                    Console.Write("/");
+                    continue;
+                }
+
+                texto += tecla.KeyChar;
+                Console.Write(tecla.KeyChar);
+            }
+
+            return texto;
+        }
+
+        private static string LerHorarioComMascara()
+        {
+            Console.Write("Horário (HH:mm): ");
+            string texto = string.Empty;
+
+            while (true)
+            {
+                ConsoleKeyInfo tecla = Console.ReadKey(true);
+
+                if (tecla.Key == ConsoleKey.Enter)
+                {
+                    Console.WriteLine();
+                    break;
+                }
+
+                if (tecla.Key == ConsoleKey.Backspace)
+                {
+                    if (texto.Length > 0)
+                    {
+                        if (texto.EndsWith(":"))
+                        {
+                            texto = texto.Substring(0, texto.Length - 1);
+                            Console.Write("\b \b");
+                        }
+
+                        texto = texto.Substring(0, texto.Length - 1);
+                        Console.Write("\b \b");
+                    }
+
+                    continue;
+                }
+
+                if (!char.IsDigit(tecla.KeyChar))
+                    continue;
+
+                if (texto.Length >= 5)
+                    continue;
+
+                if (texto.Length == 1)
+                {
+                    texto += tecla.KeyChar;
+                    Console.Write(tecla.KeyChar);
+                    texto += ":";
+                    Console.Write(":");
+                    continue;
+                }
+
+                texto += tecla.KeyChar;
+                Console.Write(tecla.KeyChar);
+            }
+
+            return texto;
+        }
+
         private static void CadastrarFestival()
         {
             Console.WriteLine("--- CADASTRAR FESTIVAL ---");
@@ -223,10 +331,8 @@ namespace LigaDaTurma
             string nome = Console.ReadLine()!;
             Console.Write("Local: ");
             string local = Console.ReadLine()!;
-            Console.Write("Data (ex: 25/10/2026): ");
-            string data = Console.ReadLine()!;
-            Console.Write("Horário (ex: 14h): ");
-            string horario = Console.ReadLine()!;
+            string data = LerDataComMascara();
+            string horario = LerHorarioComMascara();
 
             try
             {
