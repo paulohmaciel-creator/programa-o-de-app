@@ -32,7 +32,7 @@ namespace LigaDaTurma.Models
             if (!TimeOnly.TryParseExact(horarioFormatado, "HH:mm", out var horarioValidado) ||
                 horarioValidado > new TimeOnly(23, 59))
             {
-                throw new ArgumentException("O horário deve estar no formato HH:mm e não pode passar de 23:59.");
+                throw new ArgumentException("Hora inválida. Digite um horário entre 00:00 e 23:59.");
             }
 
             Data = dataValidada.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);

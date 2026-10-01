@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using LigaDaTurma.Models;
 using LigaDaTurma.Services;
 
@@ -264,6 +265,12 @@ namespace LigaDaTurma
                 Console.Write(tecla.KeyChar);
             }
 
+            if (!DateTime.TryParseExact(texto, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+            {
+                Console.WriteLine("Data inválida. Digite uma data real no formato mm/dd/aaaa.");
+                return LerDataComMascara();
+            }
+
             return texto;
         }
 
@@ -313,6 +320,12 @@ namespace LigaDaTurma
 
                 texto += tecla.KeyChar;
                 Console.Write(tecla.KeyChar);
+            }
+
+            if (!TimeOnly.TryParseExact(texto, "HH:mm", out var horario) || horario > new TimeOnly(23, 59))
+            {
+                Console.WriteLine("Hora inválida. Digite um horário entre 00:00 e 23:59.");
+                return LerHorarioComMascara();
             }
 
             return texto;
